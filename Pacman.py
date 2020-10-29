@@ -7,11 +7,12 @@ path = Turtle(visible=False)
 writer = Turtle(visible=False)
 aim = vector(5, 0)
 pacman = vector(-40, -80)
+sp=15
 ghosts = [
-    [vector(-180, 160), vector(5, 0)],
-    [vector(-180, -160), vector(0, 5)],
-    [vector(100, 160), vector(0, -5)],
-    [vector(100, -160), vector(-5, 0)],
+    [vector(-180, 160), vector(sp, 0)],
+    [vector(-180, -160), vector(0, sp)],
+    [vector(100, 160), vector(0, -sp)],
+    [vector(100, -160), vector(-sp, 0)],
 ]
 tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -88,7 +89,7 @@ def world():
                 path.goto(x + 10, y + 10)
                 path.dot(4, 'white')
 
-def move():
+def moveP():
     "Move pacman."
     writer.undo()
     writer.write(state['score'])
@@ -110,16 +111,17 @@ def move():
     up()
     goto(pacman.x + 10, pacman.y + 10)
     dot(20, 'yellow')
+    ontimer(moveP, 100)
 
     for point, course in ghosts:
         if valid(point + course):
             point.move(course)
         else:
             options = [
-                vector(5, 0),
-                vector(-5, 0),
-                vector(0, 5),
-                vector(0, -5),
+                vector(sp, 0),
+                vector(-sp, 0),
+                vector(0, sp),
+                vector(0, -sp),
             ]
             plan = choice(options)
             course.x = plan.x
@@ -135,36 +137,7 @@ def move():
         if abs(pacman - point) < 20:
             return
 
-    ontimer(move, 100)
-'''
-def moveGhosts():
-    "Move ghosts"
-    
-    for point, course in ghosts:
-        if valid(point + course):
-            point.move(course)
-        else:
-            options = [
-                vector(5, 0),
-                vector(-5, 0),
-                vector(0, 5),
-                vector(0, -5),
-            ]
-            plan = choice(options)
-            course.x = plan.x
-            course.y = plan.y
 
-        up()
-        goto(point.x + 10, point.y + 10)
-        dot(20, 'red')
-
-    update()
-
-    for point, course in ghosts:
-        if abs(pacman - point) < 20:
-            return
-    ontimer(moveGhosts, 80)
-'''
 def change(x, y):
     "Change pacman aim if valid."
     if valid(pacman + vector(x, y)):
@@ -183,6 +156,5 @@ onkey(lambda: change(-5, 0), 'Left')
 onkey(lambda: change(0, 5), 'Up')
 onkey(lambda: change(0, -5), 'Down')
 world()
-move()
-#moveGhosts()
+moveP()
 done()
