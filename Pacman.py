@@ -7,7 +7,7 @@ path = Turtle(visible=False)
 writer = Turtle(visible=False)
 aim = vector(5, 0)
 pacman = vector(-40, -80)
-sp=15
+sp=13
 ghosts = [
     [vector(-180, 160), vector(sp, 0)],
     [vector(-180, -160), vector(0, sp)],
@@ -89,7 +89,7 @@ def world():
                 path.goto(x + 10, y + 10)
                 path.dot(4, 'white')
 
-def moveP():
+def move():
     "Move pacman."
     writer.undo()
     writer.write(state['score'])
@@ -111,7 +111,7 @@ def moveP():
     up()
     goto(pacman.x + 10, pacman.y + 10)
     dot(20, 'yellow')
-    ontimer(moveP, 100)
+    ontimer(move, 100)
 
     for point, course in ghosts:
         if valid(point + course):
@@ -156,5 +156,5 @@ onkey(lambda: change(-5, 0), 'Left')
 onkey(lambda: change(0, 5), 'Up')
 onkey(lambda: change(0, -5), 'Down')
 world()
-moveP()
+move()
 done()
